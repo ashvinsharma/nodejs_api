@@ -5,6 +5,13 @@ const {
 } = format;
 
 const logger = createLogger({
+  levels: {
+    error: 3,
+    warning: 4,
+    notice: 5,
+    info: 6,
+    debug: 7,
+  },
   format: combine(
     colorize(),
     timestamp(),
@@ -12,6 +19,7 @@ const logger = createLogger({
   ),
   transports: [
     new (transports.Console)({
+      level: 'debug',
       colorize: true,
     }),
   ],

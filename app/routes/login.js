@@ -1,14 +1,32 @@
 const jwt = require('jsonwebtoken');
 const logger = require('./../../utils/logger');
+const bcrypt = require('bcrypt');
 
-module.exports = (app) => {
-  app.post('/login', (req, res) => {
+module.exports = (app, db) => {
+  app.post('/login', async (req, res) => {
+    logger.info('Incoming request to /login...');
     // TODO: validate the request
-    logger.info(req.body);
-    const token = {
+    let response = {
       token: jwt.sign(req.body, process.env.SECRET_KEY),
     };
-    logger.info(`Token ${token.token} is assigned to user ${req.body.username}`);
-    res.send(token);
+    const hash = await bcrypt.hash(req.body.pass, 5).catch(logger);
+    logger.info('token generated');
+    logger.info(`Token ${response.token} is assigned to user ${req.body.username}`);
+    const userDetails = {
+      user: req.body.name,
+      pass: hash,
+      token: response.token,
+    };
+    try {
+      logger.info('Attempting to insert the token in the database');
+      await db.collection('tokens').insertOne(userDetails);
+      logger.info('Insertion complete with no problems!');
+    } catch (e) {
+      logger.error(`Problem encountered while inserting data in the database. ERROR: ${e}`);
+      response = {
+        error: 'System error',
+      };
+    }
+    res.send(response);
   });
 };
