@@ -1,0 +1,12 @@
+{
+  "rules": {
+    "new-cap": 0,
+    "no-unused-vars": 1,
+    "linebreak-style": 0
+  },
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": "airbnb-base"
+}
