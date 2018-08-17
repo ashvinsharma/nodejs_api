@@ -5,10 +5,10 @@ const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const bodyParser = require('body-parser');
 const logger = require('./utils/logger');
-
 const app = express();
 const port = 8000;
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static(path.resolve('./public')));
 
 MongoClient.connect(process.env.DB_URL, { useNewUrlParser: true }).then(async (database) => {
   logger.info('Attempting to connect database');
