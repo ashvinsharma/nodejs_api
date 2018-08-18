@@ -6,7 +6,7 @@ const validate = async (req, db) => {
   const { name, pass } = req.body;
   if (Object.entries(req.body).length !== 2
       || (name === undefined && pass === undefined)) {
-    return [false, 'Two arguments are needed for this service.'
+    return [false, 'Two arguments are needed for this service. '
     + 'Required keys: \'name\', \'pass\''];
   }
   if (name === undefined) return [false, 'Key \'name\' is required for this service'];
@@ -24,7 +24,6 @@ const validate = async (req, db) => {
 module.exports = (app, db) => {
   app.post('/login', async (req, res) => {
     logger.info('Incoming request to /login...');
-    // TODO: validate the request
     const isValid = await validate(req, db);
     if (!isValid[0]) {
       logger.error(`Aborting: Invalid Request. ${isValid[1]}`);

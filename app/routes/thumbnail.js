@@ -14,7 +14,7 @@ const validate = async (req, db) => {
   if (!auth[0]) return [false, auth[1]];
   if (Object.entries(req.body).length !== 2
       || (token === undefined && img === undefined)) {
-    return [false, 'Two arguments are needed for this service.'
+    return [false, 'Two arguments are needed for this service. '
     + 'Required keys: \'token\', \'img\''];
   }
   if (token === undefined) return [false, 'Key \'token\' is required for this service'];
