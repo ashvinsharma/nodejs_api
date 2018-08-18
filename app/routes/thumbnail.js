@@ -15,9 +15,11 @@ module.exports = (app, db) => {
     // Validate and then download the image
     let filename;
     try {
-      // TODO: remove query string from the url if any.
+      // Removing query string from the url
+      const regx = /\?\S*$/;
+      const url = req.body.img.toString().split(regx)[0];
       const dlResult = await download.image({
-        url: req.body.img,
+        url,
         dest: constants.IMAGE_SRC,
       });
       logger.info(`Downloaded filename: ${dlResult.filename}`);
@@ -25,7 +27,7 @@ module.exports = (app, db) => {
       filename = dlResult.filename;
     } catch (e) {
       logger.error('Problem with downloading image');
-      res.send({ error: 'Error downloading the image' });
+      res.send({ error: e });
       return;
     }
     // resize the image
@@ -38,7 +40,7 @@ module.exports = (app, db) => {
       logger.info('Image is written successfully');
     } catch (e) {
       logger.error(e);
-      res.send({ error: 'Error generating thumbnail' });
+      res.send({ error: e });
       return;
     }
     const image = path.join(req.headers.host, filename)
