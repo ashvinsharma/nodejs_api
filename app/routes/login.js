@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const logger = require('./../../utils/logger');
 const bcrypt = require('bcrypt');
+const logger = require('./../../utils/logger');
 
 module.exports = (app, db) => {
   app.post('/login', async (req, res) => {
