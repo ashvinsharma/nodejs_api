@@ -1,12 +1,12 @@
 const logger = require('./logger');
 
 module.exports = async (req, db) => {
-  if (req.body.token === undefined) {
+  const { token } = req.body;
+  if (token === undefined) {
     logger.error('Request is missing token');
     return [false, 'Authentication Failed: Missing Token!'];
   }
 
-  const { token } = req.body;
   try {
     const result = await db.collection('tokens')
       .findOne({ token });
