@@ -8,7 +8,7 @@ module.exports = async (req, db) => {
   }
 
   try {
-    const result = await db.collection('tokens')
+    const result = await db.collection(constants.COLLECTION_TOKENS)
       .findOne({ token });
     if (result === null) {
       logger.error(`Token: ${token} not found.`);
