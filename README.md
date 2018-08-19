@@ -1,7 +1,7 @@
 # Node.js Task
 A microservice built in node.js express for SocialCops.It offers three different functionalities 
-1. Token creation (Public)
-2. JSON Patching (Protected)
+1. [Token](https://jwt.io/) creation (Public)
+2. [JSON Patching](http://jsonpatch.com/) (Protected)
 3. Image Thumbnail Generation (Protected)
 
 Out of these, only the first service can be used without any authentication. Rest two services need a token(signed by using HMAC + SHA256 algorithm) generated from the first service.
