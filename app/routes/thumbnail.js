@@ -38,13 +38,16 @@ const downloadImage = async (url) => {
     const size = headers['content-length'];
     logger.info(`File is of type ${type} and ${size} bytes large.`);
 
-    // Checking whether or not type of the file should is image
+    // Checking whether or not type of the file is image
     if (type[0] !== 'image') return [false, 'File type not image'];
     if (type[1] === 'gif') throw new Error('Cannot convert gif images.');
     const filename = `${Date.now()}.${type[1]}`;
     file = `${constants.IMAGE_SRC}/${filename}`;
     const buffer = await download(url);
-    await fs.writeFileSync(file, buffer);
+    if (!fs.existsSync(constants.IMAGE_SRC)) {
+      fs.mkdirSync(constants.IMAGE_SRC);
+    }
+    fs.writeFileSync(file, buffer);
   } catch (e) {
     return [false, e.message];
   }
@@ -80,7 +83,7 @@ module.exports = (app, db) => {
       // eslint-disable-next-line
       filename = result[1];
     } catch (e) {
-      logger.error('Problem downloading the image');
+      logger.error(`Problem downloading the image ${e}`);
       res.send({ error: e.message });
       return;
     }
