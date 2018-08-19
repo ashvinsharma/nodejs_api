@@ -7,6 +7,11 @@ const logger = require('./../../utils/logger');
 const constants = require('./../../utils/constants');
 const authenticate = require('./../../utils/authenticate');
 
+/**
+ * @param req - the request body from the client
+ * @param db - instance of database
+ * @desc - validates the user and the request body
+ */
 const validate = async (req, db) => {
   const auth = await authenticate(req, db);
   const { token, img } = req.body;
@@ -21,6 +26,10 @@ const validate = async (req, db) => {
   return [true];
 };
 
+/**
+ * @param url - of the image to be converted
+ * @desc - Checks the extension of the file and downloads if it is image type
+ */
 const downloadImage = async (url) => {
   let file = '';
   try {
@@ -43,6 +52,12 @@ const downloadImage = async (url) => {
   return [true, file];
 };
 
+/**
+ * @param app - the app instance from server.js
+ * @param db - instance of database
+ * @desc - Takes authorization token and an image url to convert it in a
+ * thumbnail of size 50x50
+ */
 module.exports = (app, db) => {
   app.post('/thumbnail', async (req, res) => {
     const isValid = await validate(req, db);

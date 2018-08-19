@@ -3,6 +3,11 @@ const bcrypt = require('bcrypt');
 const constants = require('./../../utils/constants');
 const logger = require('./../../utils/logger');
 
+/**
+ * @param req - the request body from the client
+ * @param db - instance of database
+ * @desc - validates the user and the request body
+ */
 const validate = async (req, db) => {
   const { user, pass } = req.body;
   if (Object.entries(req.body).length !== 2
@@ -21,6 +26,12 @@ const validate = async (req, db) => {
   return [true];
 };
 
+/**
+ * @param app - the app instance from server.js
+ * @param db - instance of database
+ * @desc - Takes username and password and generates a [JWT]{@link  https://jwt.io/}
+ * which is be used to validate some other services.
+ */
 module.exports = (app, db) => {
   app.post('/login', async (req, res) => {
     logger.info('Incoming request to /login...');

@@ -1,6 +1,11 @@
 const logger = require('./logger');
 const constants = require('./constants');
 
+/**
+ * @param req - the request body from the client
+ * @param db - instance of database
+ * @desc - returns true if user is authorized, false with error message otherwise
+ */
 module.exports = async (req, db) => {
   const { token } = req.body;
   if (token === undefined) {

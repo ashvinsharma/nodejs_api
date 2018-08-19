@@ -9,6 +9,7 @@ const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
     + '.eyJ1c2VyIjoiYXNodmluIiwicGFzcyI6InBhc3MiLCJpYXQiOjE1MzQ2OTc2OTB9'
     + '.oRjLaGGXdC-P7LtlhS7PokdjPfs-HjmiILa2WKzEvHM';
 const falseToken = 'false_token';
+
 // eslint-disable-next-line
 before(function (done) {
   this.timeout(10000); // 10 second timeout for setup
