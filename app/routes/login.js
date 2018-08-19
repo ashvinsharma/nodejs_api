@@ -6,18 +6,17 @@ const logger = require('./../../utils/logger');
 const validate = async (req, db) => {
   const { user, pass } = req.body;
   if (Object.entries(req.body).length !== 2
-      || (user === undefined && pass === undefined)) {
+      || user === undefined
+      || pass === undefined) {
     return [false, 'Two arguments are needed for this service. '
     + 'Required keys: \'user\', \'pass\''];
   }
-  if (user === undefined) return [false, 'Key \'user\' is required for this service'];
-  if (pass === undefined) return [false, 'Key \'pass\' is required for this service'];
 
   try {
     const isUser = await db.collection(constants.COLLECTION_TOKENS).findOne({ user });
-    if (isUser !== null) return [false, 'User exists already!'];
+    if (isUser !== null) throw new Error('User exists already!');
   } catch (e) {
-    return [false, e];
+    return [false, e.message];
   }
   return [true];
 };

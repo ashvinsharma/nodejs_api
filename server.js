@@ -10,11 +10,10 @@ const app = express();
 const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('./public')));
-let db = MongoClient;
 
 MongoClient.connect(process.env.DB_URL, { useNewUrlParser: true }).then((database) => {
   logger.info('Attempting to connect database');
-  db = database.db('socialcops');
+  const db = database.db('socialcops');
   logger.info('Connection to database is established!');
 
   // eslint-disable-next-line
@@ -28,7 +27,4 @@ MongoClient.connect(process.env.DB_URL, { useNewUrlParser: true }).then((databas
   logger.error(`Connection to database FAILED! Error: ${e}`);
 });
 
-module.exports = {
-  app,
-  db,
-};
+module.exports = { app };

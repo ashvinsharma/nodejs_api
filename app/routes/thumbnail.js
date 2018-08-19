@@ -13,12 +13,11 @@ const validate = async (req, db) => {
 
   if (!auth[0]) return [false, auth[1]];
   if (Object.entries(req.body).length !== 2
-      || (token === undefined && img === undefined)) {
+      || token === undefined
+      || img === undefined) {
     return [false, 'Two arguments are needed for this service. '
     + 'Required keys: \'token\', \'img\''];
   }
-  if (token === undefined) return [false, 'Key \'token\' is required for this service'];
-  if (img === undefined) return [false, 'Key \'img\' is required for this service'];
   return [true];
 };
 
@@ -32,13 +31,13 @@ const downloadImage = async (url) => {
 
     // Checking whether or not type of the file should is image
     if (type[0] !== 'image') return [false, 'File type not image'];
-
+    if (type[1] === 'gif') throw new Error('Cannot convert gif images.');
     const filename = `${Date.now()}.${type[1]}`;
     file = `${constants.IMAGE_SRC}/${filename}`;
     const buffer = await download(url);
     await fs.writeFileSync(file, buffer);
   } catch (e) {
-    return [false, e];
+    return [false, e.message];
   }
   logger.info(`Image has been downloaded and saved as ${file}`);
   return [true, file];
@@ -60,16 +59,14 @@ module.exports = (app, db) => {
       const url = req.body.img.toString().split(regx)[0];
       const result = await downloadImage(url);
       if (!result[0]) {
-        logger.error(`Error occurred while downloading the file. ${result[1]}`);
-        res.send({ error: 'Error while downloading the file. Check the URL of the image' });
-        return;
+        throw new Error(`Error occurred while downloading the file. ${result[1]}`);
       }
       logger.info(`Downloaded filename: ${result[1]}`);
       // eslint-disable-next-line
       filename = result[1];
     } catch (e) {
-      logger.error('Problem with downloading image');
-      res.send({ error: e });
+      logger.error('Problem downloading the image');
+      res.send({ error: e.message });
       return;
     }
     // resize the image

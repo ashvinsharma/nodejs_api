@@ -8,19 +8,20 @@ module.exports = async (req, db) => {
     return [false, 'Authentication Failed: Missing Token!'];
   }
 
+  let errorMessage = '';
   try {
     const result = await db.collection(constants.COLLECTION_TOKENS)
       .findOne({ token });
     if (result === null) {
-      logger.error(`Token: ${token} not found.`);
-      return [false, 'Token not found!'];
+      throw new Error('Token not found!');
     }
     if (Object.entries(result).length !== 0) {
       logger.info('Token found!');
       return [true];
     }
   } catch (e) {
-    logger.error(`Can't connect to database at the moment, try again later. ${e}`);
+    errorMessage = e.message;
+    logger.error(e.message);
   }
-  return [false, 'Can\'t connect to database at the moment, try again later.'];
+  return [false, errorMessage];
 };

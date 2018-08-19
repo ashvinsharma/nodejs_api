@@ -1,4 +1,4 @@
-const jsonpatch = require('fast-json-patch');
+const { applyPatch, applyOperation } = require('fast-json-patch');
 const authenticate = require('./../../utils/authenticate');
 const logger = require('./../../utils/logger');
 
@@ -8,21 +8,18 @@ const validate = async (req, db) => {
 
   if (!auth[0]) return [false, auth[1]];
   if (Object.entries(req.body).length !== 3
-      || (token === undefined
-          && object === undefined
-          && patch === undefined)) {
+      || token === undefined
+      || object === undefined
+      || patch === undefined) {
     return [false, 'Three arguments are needed for this service. '
     + 'Required keys: \'token\', \'object\', \'patch\''];
   }
-  if (token === undefined) return [false, 'Key \'token\' is required for this service'];
-  if (object === undefined) return [false, 'Key \'object\' is required for this service'];
-  if (patch === undefined) return [false, 'Key \'patch\' is required for this service'];
   return [true];
 };
 
-const doPatch = (object, patch) => ((typeof patch === 'object')
-  ? jsonpatch.applyPatch(object, patch).newDocument
-  : jsonpatch.applyPatch(object, patch).newDocument);
+const doPatch = (object, patch) => (Array.isArray(patch)
+  ? applyPatch(object, patch).newDocument
+  : applyOperation(object, patch).newDocument);
 
 module.exports = (app, db) => {
   app.post('/json_patch', async (req, res) => {
