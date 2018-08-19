@@ -12,9 +12,10 @@ Out of these, only the first service can be used without any authentication. Res
 1. Install node.js version `8.x` from https://nodejs.org/en/download/ and Postman from https://www.getpostman.com/
 2. Clone the repository using `git clone -b master https://github.com/ashvinsharma/nodejs_api.git`.
 3. Install all the necessary libraries using the command `npm install`.
-4. For security reasons file with details of database is not commited on git. So create a file `.env` in the root folder like so,
+4. For security reasons file with details of database is not commited on git. So create a file `.env` in the root folder with the following contents,
 ```
+SECRET_KEY=mysecretkey
 DB_URL=mongodb://<username>:<password>@<db_url>:<db_port>/<db_name>
 ```
 5. Run `npm start` to start the project.
-6. Run Postman to send the requests.
+6. Run Postman to send the requests or simply run `npm test` to initiate the test.
