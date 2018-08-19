@@ -7,13 +7,14 @@ const bodyParser = require('body-parser');
 const logger = require('./utils/logger');
 
 const app = express();
-const port = 8000;
+const port = 3000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.resolve('./public')));
+let db = MongoClient;
 
-MongoClient.connect(process.env.DB_URL, { useNewUrlParser: true }).then(async (database) => {
+MongoClient.connect(process.env.DB_URL, { useNewUrlParser: true }).then((database) => {
   logger.info('Attempting to connect database');
-  const db = database.db('socialcops');
+  db = database.db('socialcops');
   logger.info('Connection to database is established!');
 
   // eslint-disable-next-line
@@ -21,9 +22,13 @@ MongoClient.connect(process.env.DB_URL, { useNewUrlParser: true }).then(async (d
 
   app.listen(port, () => {
     logger.info(`We are live on ${port}`);
+    app.emit('appStarted');
   });
 }).catch((e) => {
   logger.error(`Connection to database FAILED! Error: ${e}`);
 });
 
-module.exports = app;
+module.exports = {
+  app,
+  db,
+};

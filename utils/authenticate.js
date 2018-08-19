@@ -1,4 +1,5 @@
 const logger = require('./logger');
+const constants = require('./constants');
 
 module.exports = async (req, db) => {
   const { token } = req.body;
@@ -19,7 +20,7 @@ module.exports = async (req, db) => {
       return [true];
     }
   } catch (e) {
-    logger.error(`Can't connect to database atm, try again later. ${e}`);
+    logger.error(`Can't connect to database at the moment, try again later. ${e}`);
   }
-  return [false, 'Can\'t connect to database atm, try again later.'];
+  return [false, 'Can\'t connect to database at the moment, try again later.'];
 };

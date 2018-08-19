@@ -19,8 +19,9 @@ const logger = createLogger({
   ),
   transports: [
     new (transports.Console)({
-      level: 'debug',
+      level: 'info',
       colorize: true,
+      silent: (process.env.NODE_ENV === 'test'),
     }),
   ],
 });

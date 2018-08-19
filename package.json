@@ -4,7 +4,7 @@
   "description": "Assignment for Social Cops by Ashvin Sharma <ashvin.sharma.y15@lnmiit.ac.in>",
   "main": "server.js",
   "scripts": {
-    "test": "mocha ./test/test.js",
+    "test": "istanbul cover mocha ./test/test.js --compiler",
     "dev": "nodemon server.js",
     "start": "node server.js",
     "lint": "eslint \"./**/*.js\""
@@ -39,8 +39,10 @@
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-mocha": "^5.2.0",
+    "istanbul": "^0.4.5",
     "mocha": "^5.2.0",
     "nodemon": "^1.18.3",
+    "nyc": "^12.0.2",
     "supertest": "^3.1.0"
   }
 }
