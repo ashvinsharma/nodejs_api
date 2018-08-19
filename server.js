@@ -25,3 +25,5 @@ MongoClient.connect(process.env.DB_URL, { useNewUrlParser: true }).then(async (d
 }).catch((e) => {
   logger.error(`Connection to database FAILED! Error: ${e}`);
 });
+
+module.exports = app;

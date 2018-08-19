@@ -1,4 +1,7 @@
 {
+  "plugins": [
+    "mocha"
+  ],
   "rules": {
     "new-cap": 0,
     "no-unused-vars": 1,
@@ -6,7 +9,8 @@
   },
   "env": {
     "es6": true,
-    "node": true
+    "node": true,
+    "mocha": true
   },
   "extends": "airbnb-base"
 }
