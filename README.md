@@ -1,5 +1,5 @@
 # Node.js Task
-A microservice built in node.js express for SocialCops.It offers three different functionalities 
+A microservice built in node.js express for SocialCops. It offers three different functionalities 
 1. [Token](https://jwt.io/) creation (Public)
 2. [JSON Patching](http://jsonpatch.com/) (Protected)
 3. Image Thumbnail Generation (Protected)
